@@ -24,12 +24,12 @@ def tf-idf(t, tf )
   - createDict_tf(d): generates the dictionary of terms frequency of the document d
 ```Smalltalk
 def createDict_tf(d)
-  # convert d to a collection
+  " convert d to a collection"
   anArray := tokenizer:d
 
-  # realizes proprocessing
+  " realizes proprocessing
   #    remove stop words
-  #    lemmatization
+  #    lemmatization"
   
   self preprocess: anArray.
   
@@ -38,8 +38,8 @@ def createDict_tf(d)
   aDict := pcs countIn: anArray
   
   
-  # remove from aDict terms with frequencia out of the interval [min_tf, max_tf]
-  #TODO
+  " remove from aDict terms with frequencia out of the interval [min_tf, max_tf]
+  #TODO"
   
   ^ aDict
 ```
@@ -52,7 +52,7 @@ def training(aCollection)
   numDocuments := aCollection size.
   dict_df := Dictionary new.
   
-  #gera o dicionario de frequencias de cada documento 
+  "gera o dicionario de frequencias de cada documento "
   for d in aCollection:
     anArray := preprocess:d
     
@@ -63,7 +63,7 @@ def training(aCollection)
   
   dict_idf := Dictionary new.
   
-  #converte dict_df into a Inverse Document Frequency dictionary
+  "converte dict_df into a Inverse Document Frequency dictionary"
   
   for term, freq in dict_df keys:
     dict_idf[term] := log(freq / numDocuments)

@@ -16,13 +16,13 @@ This class has the following methods
 
 
   - tf_idf: receive a term and the respective frequence in the doc and returns the tf-idf
-```python
+```Smalltalk
 def tf-idf(t, tf ) 
   ^ tf*dict_idf(ti)
 ```
 
   - createDict_tf(d): generates the dictionary of terms frequency of the document d
-```python
+```Smalltalk
 def createDict_tf(d)
   # convert d to a collection
   anArray := tokenizer:d
@@ -46,7 +46,7 @@ def createDict_tf(d)
   - training(aCollection): main function of this class
     - defines the dict_idf for the given collection
 
-```python
+```Smalltalk
 def training(aCollection)
 
   numDocuments := aCollection size.
@@ -73,7 +73,7 @@ def training(aCollection)
 
   - tokenizer(aString): returns a collection of tokens
     - splits the string
-```python
+```Smalltalk
 def tokenizer: aString
   |aCollection|
   
@@ -86,7 +86,7 @@ def tokenizer: aString
 Code example :smile:
 
 
-```
+```Smalltalk
 pcsTagger = PCSTagger new.
 
 pcs.training: aGODDataCollection.

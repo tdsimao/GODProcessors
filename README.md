@@ -58,7 +58,7 @@ def training(aCollection)
     anArray := preprocess:d
     
     for term in anArray asSet:
-      #checar se em caso de dict_idf[term] não existir ele retorna 0
+      "checar se em caso de dict_idf[term] não existir ele retorna 0"
       dict_idf[term] := dict_idf[term] + 1
   
   

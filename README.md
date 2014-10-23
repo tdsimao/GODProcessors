@@ -34,7 +34,8 @@ def createDict_tf(d)
   self preprocess: anArray.
   
   pcs := PCSProcessors new.
-  # calculates number of ocourrences of each term
+  
+  " calculates number of ocourrences of each term"
   aDict := pcs countIn: anArray
   
   
@@ -97,7 +98,3 @@ pcs.addTagsTo: anotherGODData.
 
 
 ```
-
-
-
-update 

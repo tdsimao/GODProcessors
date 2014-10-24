@@ -18,7 +18,7 @@ This class has the following methods
   - tf_idf: receive a term and the respective frequence in the doc and returns the tf-idf
 ```Smalltalk
 tf-idf: aTerm withFrequence: aFrequence
-  ^ aFrequence *self dict_idf(aTerm)
+  ^aFrequence *self dict_idf(aTerm)
 ```
 
   - createDict_tf(aString): generates the dictionary of terms frequency of the document aString

@@ -70,7 +70,7 @@ def training(aCollection)
   
   "converte dict_df into a Inverse Document Frequency dictionary"
   
-  dict_df keysandvalues do: [ term freq|
+  dict_df keysandvalues do: [ :term :freq |
     dict_idf at: term put: log(freq / numDocuments)
   ]
 ```
@@ -87,13 +87,12 @@ def tokenizer: aString
 ```
 
 
-  -  preprocess: anArray
-    - to be defined
+  -  preprocess: anArray (must be better defined)
     - receives an Array of tokens
-    - 
-    - may remove common words
-    - capitalize tokens
-    - may do stemming and lemmatization
+    - optional
+      - may remove common words
+      - capitalize tokens
+      - may do stemming and lemmatization
 ```Smalltalk
 preprocess: anArray
   |anArray|

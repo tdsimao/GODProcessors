@@ -11,6 +11,9 @@ This class has the following atributes
     - float in range [0..1]
   - minTf: define the min frequence to be considerated
     - float in range [0..1]
+  - minRelevance
+    - define the min value of relevance that will be accepted as a tag
+    - float in range [0..1]
 
 This class has the following methods
 
@@ -20,10 +23,11 @@ This class has the following methods
 tf-idf: aTerm withFrequence: aFrequence
   ^aFrequence * self dict_idf(aTerm)
 ```
+  
 
   - createDict_tf(aString): generates the dictionary of terms frequency of the document aString
 ```Smalltalk
-createDict_tf(aString)
+createDict_tf: aString
   |anArray|
   " convert aString to a collection"
   
@@ -105,6 +109,32 @@ preprocess: anArray
   
 ```
 
+
+  - addTagsTo: aElement
+    - generate tags to aElement
+```Smalltalk
+addTagsTo: aElement
+  |aDict|
+  
+  aDict := createDict_tf: aString.
+  
+  "calcula o tfidf de cada termo de aDict"
+  
+  tfidfDict := Dictionary new.
+  
+  self training: aCollection
+  aDict valuesKey do [:term :tf |
+    tfidf := self tf-idf: aTerm withFrequence: tf
+    if tfidf > minRelevance [
+      tfidfDict at: term put: aFrequence
+    ]
+  ]
+  
+  
+  ^(tfidfDict keys).
+  
+  
+```
 
   - tagCollection: aCollection
     - generate tags to all elements of aCollection

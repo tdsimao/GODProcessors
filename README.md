@@ -17,13 +17,13 @@ This class has the following methods
 
   - tf_idf: receive a term and the respective frequence in the doc and returns the tf-idf
 ```Smalltalk
-def tf-idf(t, tf ) 
-  ^ tf*dict_idf(ti)
+tf-idf: aTerm withFrequence: aFrequence
+  ^ aFrequence *self dict_idf(aTerm)
 ```
 
-  - createDict_tf(d): generates the dictionary of terms frequency of the document d
+  - createDict_tf(aString): generates the dictionary of terms frequency of the document aString
 ```Smalltalk
-def createDict_tf(d)
+createDict_tf(aString)
   " convert d to a collection"
   anArray := tokenizer:d
 
@@ -42,7 +42,7 @@ def createDict_tf(d)
   " remove from aDict terms with frequencia out of the interval [min_tf, max_tf]
   #TODO"
   
-  ^ aDict
+  ^aDict
 ```
   - training(aCollection): main function of this class
     - defines the dict_idf for the given collection
@@ -69,7 +69,7 @@ def training(aCollection)
   for term, freq in dict_df keys:
     dict_idf[term] := log(freq / numDocuments)
   
-  ^ idf
+  ^idf
 ```
 
   - tokenizer(aString): returns a collection of tokens

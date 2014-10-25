@@ -63,19 +63,19 @@ def training(aCollection)
   dict_df := Dictionary new.
   
   "gera o dicionario de frequencias de cada documento "
-  aCollection do [ :aElement|
-    anArray := preprocess: aElement
-    anArray asSet do [ :term |
-      dict_idf[term] := dict_idf[term] + 1
-    ]
+  aCollection do: [ :aElement|
+    anArray := preprocess: aElement.
+    anArray asSet do: [ :term |
+      dict_idf at: term put: := ((dict_idf at: term) + 1)
+    ].
 
   dict_idf := Dictionary new.
   
   "converte dict_df into a Inverse Document Frequency dictionary"
   
-  dict_df keysandvalues do: [ :term :freq |
+  dict_df keysAndValuesDo: [ :term :freq |
     dict_idf at: term put: ((freq / numDocuments) log)
-  ]
+  ].
 ```
 
   - tokenizer(aString): returns a collection of tokens
@@ -116,12 +116,12 @@ addTagsTo: aElement
   "calcula o tfidf de cada termo de aDict"
   tfidfDict := Dictionary new.
   self training: aCollection.
-  aDict valuesKey do [ :term :tf |
+  aDict keysAndValuesDo: [ :term :tf |
     tfidf := self tf-idf: aTerm withFrequence: tf.
-    if tfidf > minRelevance [
+    (tfidf > minRelevance) ifTrue: [
       tfidfDict at: term put: aFrequence
     ]
-  ]
+  ].
   ^(tfidfDict keys).
 ```
 
@@ -129,10 +129,12 @@ addTagsTo: aElement
     - generate tags to all elements of aCollection
 ```Smalltalk
 tagCollection: aCollection
-  self training: aCollection
-  aCollection do [ :element |
-    self addTagsTo: element.
-  ]
+
+  self training: aCollection.
+  aCollection do: [ :element |
+    self addTagsTo: element
+  ].
+  
 ```
 ###How to use
 

@@ -1,8 +1,9 @@
 #GODProcessors
 
+##PCSTagger
 Description of class PCSTagger subclass of PCSProcessors
 
-
+###Atributes
 This class has the following atributes
 
   - dictIdf: an dictionary of idf
@@ -15,15 +16,16 @@ This class has the following atributes
     - define the min value of relevance that will be accepted as a tag
     - float in range [0..1]
 
-This class has the following methods
 
+###Methods
+
+This class has the following methods
 
   - tf_idf: receive a term and the respective frequence in the doc and returns the tf-idf
 ```Smalltalk
 tf-idf: aTerm withFrequence: aFrequence
-  ^aFrequence * self dict_idf(aTerm)
+  ^(aFrequence * self dict_idf(aTerm))
 ```
-  
 
   - createDict_tf(aString): generates the dictionary of terms frequency of the document aString
 ```Smalltalk
@@ -31,7 +33,7 @@ createDict_tf: aString
   |anArray|
   " convert aString to a collection"
   
-  anArray := tokenizer:aString
+  anArray := self tokenizer: aString
 
   " realizes proprocessing
       remove stop words
@@ -46,11 +48,9 @@ createDict_tf: aString
   " calculates number of ocourrences of each term"
   aDict := pcs countIn: anArray
   
-  
   " remove from aDict terms with frequencia out of the interval [min_tf, max_tf]
   #TODO"
-  
-  
+
   ^aDict
 ```
   - training(aCollection): main function of this class
@@ -65,17 +65,16 @@ def training(aCollection)
   "gera o dicionario de frequencias de cada documento "
   aCollection do [ :aElement|
     anArray := preprocess: aElement
-    anArray asSet do [ term |
+    anArray asSet do [ :term |
       dict_idf[term] := dict_idf[term] + 1
     ]
-  
-  
+
   dict_idf := Dictionary new.
   
   "converte dict_df into a Inverse Document Frequency dictionary"
   
   dict_df keysandvalues do: [ :term :freq |
-    dict_idf at: term put: log(freq / numDocuments)
+    dict_idf at: term put: ((freq / numDocuments) log)
   ]
 ```
 
@@ -85,13 +84,13 @@ def training(aCollection)
 def tokenizer: aString
   |anArray|
   "this method split aString"
-  anArray := Array new.
   
-  ^ aCollection
+  anArray := aString subStrings.
+  
+  ^aArray.
 ```
 
-
-  -  preprocess: anArray (must be better defined)
+  - preprocess: anArray (must be better defined)
     - receives an Array of tokens
     - optional
       - may remove common words
@@ -99,41 +98,31 @@ def tokenizer: aString
       - may do stemming and lemmatization
 ```Smalltalk
 preprocess: anArray
-  |anArray|
+  | anArray |
   "this method returns realizes comom preprocess methods
     - may remove common words
     - capitalize tokens
     - may do stemming and lemmatization
     
   "
-  
 ```
-
 
   - addTagsTo: aElement
     - generate tags to aElement
 ```Smalltalk
 addTagsTo: aElement
   |aDict|
-  
   aDict := createDict_tf: aString.
-  
   "calcula o tfidf de cada termo de aDict"
-  
   tfidfDict := Dictionary new.
-  
-  self training: aCollection
-  aDict valuesKey do [:term :tf |
-    tfidf := self tf-idf: aTerm withFrequence: tf
+  self training: aCollection.
+  aDict valuesKey do [ :term :tf |
+    tfidf := self tf-idf: aTerm withFrequence: tf.
     if tfidf > minRelevance [
       tfidfDict at: term put: aFrequence
     ]
   ]
-  
-  
   ^(tfidfDict keys).
-  
-  
 ```
 
   - tagCollection: aCollection
@@ -144,21 +133,15 @@ tagCollection: aCollection
   aCollection do [ :element |
     self addTagsTo: element.
   ]
-  
-  
 ```
+###How to use
 
-
-
-##How to use,
-
-###To tag a collection
+####To tag all element of a collection
 ```Smalltalk
 pcsTagger = PCSTagger new.
 pcsTagger.tagCollection: aGODDataCollection.
 ```
-
-###To tag an element
+####To tag an element
 ```Smalltalk
 pcsTagger = PCSTagger new.
 pcsTagger.training: aGODDataCollection.

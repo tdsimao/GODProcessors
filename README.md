@@ -57,16 +57,16 @@ createDict_tf: aString
     - defines the dict_idf for the given collection
 
 ```Smalltalk
-def training(aCollection)
-
+training: aCollection
+  |numDocuments dict_df dict_idf|
   numDocuments := aCollection size.
   dict_df := Dictionary new.
   
   "gera o dicionario de frequencias de cada documento "
   aCollection do: [ :aElement|
-    anArray := preprocess: aElement.
+    anArray := self preprocess: aElement.
     anArray asSet do: [ :term |
-      dict_idf at: term put: := ((dict_idf at: term) + 1)
+      dict_df at: term put: := ((dict_idf at: term) + 1)
     ].
 
   dict_idf := Dictionary new.
@@ -111,14 +111,14 @@ preprocess: anArray
     - generate tags to aElement
 ```Smalltalk
 addTagsTo: aElement
-  |aDict|
+  |aDict tfidfDict|
   aDict := createDict_tf: aString.
   "calcula o tfidf de cada termo de aDict"
   tfidfDict := Dictionary new.
   self training: aCollection.
   aDict keysAndValuesDo: [ :term :tf |
     tfidf := self tf-idf: aTerm withFrequence: tf.
-    (tfidf > minRelevance) ifTrue: [
+    (tfidf > self minRelevance) ifTrue: [
       tfidfDict at: term put: aFrequence
     ]
   ].

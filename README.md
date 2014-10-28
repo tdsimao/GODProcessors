@@ -44,7 +44,7 @@ createDictTf: aString
 
    	^aDictTf
 ```
-  - training(aCollection): main function of this class
+  - createDictIdf: aStringCollection
     - defines the dict_idf for the given collection
 
 ```Smalltalk
@@ -127,7 +127,7 @@ getMoreRelevantsOf: aString
 ```
 
 The methods training, addTagsTo and tagCollection are specialized to deal with GODData
-```
+```Smalltalk
 training: aGODDataCollection
 	|aStringCollection|
 	

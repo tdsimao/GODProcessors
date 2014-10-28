@@ -29,65 +29,55 @@ tf-idf: aTerm withFrequence: aFrequence
 
   - createDict_tf(aString): generates the dictionary of terms frequency of the document aString
 ```Smalltalk
-createDict_tf: aString
-  |anArray|
-  " convert aString to a collection"
-  
-  anArray := self tokenizer: aString
+createDictTf: aString
+  	|aBag aDictTf|
+	
+  	" convert aString to an Bag of tokens"
+  	aBag := self preprocess: aString.
 
-  " realizes proprocessing
-      remove stop words
-      lemmatization"
-  
-  self preprocess: anArray.
-  
-  "seria interessante colocar o método countIn na class PCSProcessor pois é comum as duas classes
-    assim evitariamos ter de instanciar a classe aqui"
-  pcs := PCSProcessors new.
-  
-  " calculates number of ocourrences of each term"
-  aDict := pcs countIn: anArray
-  
-  " remove from aDict terms with frequencia out of the interval [min_tf, max_tf]
-  #TODO"
+  	" calculates number of ocourrences of each token"
+  	aDictTf := self countIn: aBag.
 
-  ^aDict
+  	"TODO:
+		 remove from aDictTf token with frequence out of the interval [min_tf, max_tf]
+  	"
+
+   	^aDictTf
 ```
   - training(aCollection): main function of this class
     - defines the dict_idf for the given collection
 
 ```Smalltalk
-training: aCollection
-  |numDocuments dict_df dict_idf|
-  numDocuments := aCollection size.
-  dict_df := Dictionary new.
-  
-  "gera o dicionario de frequencias de cada documento "
-  aCollection do: [ :aElement|
-    anArray := self preprocess: aElement.
-    anArray asSet do: [ :term |
-      dict_df at: term put: := ((dict_idf at: term) + 1)
-    ].
+createDictIdf: aStringCollection
+  	|numDocuments dictDf aBag|
+  	numDocuments := aStringCollection size.
+  	dictDf := Dictionary new.
+	
+  	"gera o dicionario de frequencias de cada documento "
+  	aStringCollection do: [ :aElement |
+		aBag := self  preprocess: aElement.
+		aBag asSet do: [ :token |
+      		dictDf at: token put: ((dictIdf at: token) + 1)
+		]
+    	].
 
-  dict_idf := Dictionary new.
-  
-  "converte dict_df into a Inverse Document Frequency dictionary"
-  
-  dict_df keysAndValuesDo: [ :term :freq |
-    dict_idf at: term put: ((freq / numDocuments) log)
-  ].
+  	"converte dict_df into a Inverse Document Frequency dictionary"
+  	dictIdf := Dictionary new.
+  	dictDf keysAndValuesDo: [ :token :freq |
+    		dictIdf at: token put: ((freq / numDocuments) log)
+  	].
 ```
 
   - tokenizer(aString): returns a collection of tokens
     - splits the string
 ```Smalltalk
-def tokenizer: aString
-  |anArray|
-  "this method split aString"
-  
-  anArray := aString subStrings.
-  
-  ^aArray.
+tokenizer: aString
+  	|aBag|
+	"this method split aString and return a Bag of tokens"
+	
+	"we decide to use a Bag, once the order of the tokens doesn't matter"
+	aBag := (aString subStrings) asBag.
+	^aBag.
 ```
 
   - preprocess: anArray (must be better defined)
@@ -97,44 +87,80 @@ def tokenizer: aString
       - capitalize tokens
       - may do stemming and lemmatization
 ```Smalltalk
-preprocess: anArray
-  | anArray |
-  "this method returns realizes comom preprocess methods
+preprocess: aString
+  | aBag |
+  "this method realizes comom preprocess methods over the String
+	1- tokenizes the String 
     - may remove common words
     - capitalize tokens
     - may do stemming and lemmatization
-    
+	anArray := self tokenizer: aS. 
   "
+	aBag := self tokenizer: aString. 
+	
+	
+	^aBag
 ```
 
-  - addTagsTo: aElement
+  - getMoreRelevantsOf: aString
     - generate tags to aElement
 ```Smalltalk
-addTagsTo: aElement
-  |aDict tfidfDict|
-  aDict := createDict_tf: aString.
-  "calcula o tfidf de cada termo de aDict"
-  tfidfDict := Dictionary new.
-  self training: aCollection.
-  aDict keysAndValuesDo: [ :term :tf |
-    tfidf := self tf-idf: aTerm withFrequence: tf.
-    (tfidf > self minRelevance) ifTrue: [
-      tfidfDict at: term put: aFrequence
-    ]
-  ].
-  ^(tfidfDict keys).
+getMoreRelevantsOf: aString
+ 
+	|dictTf tfIdfDict tfidf|
+
+	"TODO check if dictIdf is not empty
+	in this case raise error
+		message: dictIdf is Empty, make shure of call 'training' before call this method
+	"
+  	dictTf :=  self createDictTf: aString.
+  	"calcula o tfidf de cada termo de aDict"
+  	tfIdfDict := Dictionary new.
+  	dictTf keysAndValuesDo: [ :token :tf |
+    		tfidf := self tfIdf: token withFrequence: tf.
+   		 (tfidf > minRelevance)
+			ifTrue: [
+      			tfIdfDict at: token put: tf
+    			]
+  	].
+  	^(tfIdfDict keys).
+```
+
+The methods training, addTagsTo and tagCollection are specialized to deal with GODData
+```
+training: aGODDataCollection
+	|aStringCollection|
+	
+  	"it extacts the aGODDataCollection's contents"
+	aStringCollection := Bag new.
+  	aGODDataCollection do: [ :aElement |
+		aStringCollection add: aElement content.
+    	].
+  	"it trains the algorithm with the given aGODDataCollection contents"
+	self createDictIdf: aStringCollection.
+```
+
+
+
+  - addTagsTo: aGodData
+    - generate tags to aGodData
+```Smalltalk
+addTagsTo: aGodData
+	|tags|
+	" Get most relevants tokens in aGodData and add it as tags of aGodData "
+	tags := self getMoreRelevantsOf: aGodData content.
+	aGodData tags: tags.
 ```
 
   - tagCollection: aCollection
     - generate tags to all elements of aCollection
 ```Smalltalk
-tagCollection: aCollection
+tagCollection: aGODDataCollection
 
-  self training: aCollection.
-  aCollection do: [ :element |
+  self training: aGODDataCollection.
+  aGODDataCollection do: [ :element |
     self addTagsTo: element
   ].
-  
 ```
 ###How to use
 

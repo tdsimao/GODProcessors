@@ -179,10 +179,10 @@ pcsTagger.addTagsTo: aGODData.
 
 ###TODO
 
-- [ ] Criar um método de inicialização da classe que define os parâmetros padrão do treinamento;
+- [ ] Criar um método para configurar os parametros de treinamento;
+- [ ] Criar um método de inicialização da classe que define a configuração padrão dos parâmetros;
 - [ ] Em createDictTf, remover os tokens que estejam fora do intervalo desejado;
 - [ ] Em getMoreRelevant precisamos checar se o dicionário de idf esta vazio;
-- [ ] Criar um método para configurar os parametros de treinamento;
-- [ ] Ao realizar o treinamento excluit o dictIdf antigo;
+- [ ] Ao realizar o treinamento excluit o dictIdf antigo (createDictIdf);
 - [ ] Checar a necessidade de adicionar 1 objeto a um conjunto já treinado, nesse caso pensar em como fazer isso.
-
+- [ ] Verificar caso em que tentamos taggear um objeto que não participou do treinamento e possui um token distinto.

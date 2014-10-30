@@ -186,3 +186,4 @@ pcsTagger.addTagsTo: aGODData.
 - [ ] Ao realizar o treinamento excluit o dictIdf antigo (createDictIdf);
 - [ ] Checar a necessidade de adicionar 1 objeto a um conjunto já treinado, nesse caso pensar em como fazer isso.
 - [ ] Verificar o caso em que tentamos taggear um objeto que não participou do treinamento e que possui um token distinto.
+- [ ] Em 'getMoreRelevantsOf' realizar uma normalização do tf-idf calculados, para posteriormente poder retornar apenas aqueles com relevância maior que minRelevance

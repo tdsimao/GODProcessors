@@ -185,4 +185,4 @@ pcsTagger.addTagsTo: aGODData.
 - [ ] Em getMoreRelevant precisamos checar se o dicionário de idf esta vazio;
 - [ ] Ao realizar o treinamento excluit o dictIdf antigo (createDictIdf);
 - [ ] Checar a necessidade de adicionar 1 objeto a um conjunto já treinado, nesse caso pensar em como fazer isso.
-- [ ] Verificar caso em que tentamos taggear um objeto que não participou do treinamento e possui um token distinto.
+- [ ] Verificar o caso em que tentamos taggear um objeto que não participou do treinamento e que possui um token distinto.

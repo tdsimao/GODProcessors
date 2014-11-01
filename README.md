@@ -183,7 +183,7 @@ pcsTagger.addTagsTo: aGODData.
 - [x] Criar um método de inicialização da classe que define a configuração padrão dos parâmetros;
 - [ ] Em getMoreRelevant, remover os tokens que estejam fora do intervalo desejado [minTf ,maxTf];
 - [ ] Em getMoreRelevant precisamos checar se o dicionário de idf esta vazio, nesse caso retornar erro avisando que é necessário realizar o treinamento antes de taggear um novo objeto;
-- [ ] Ao realizar o treinamento excluit o dictIdf antigo (createDictIdf);
+- [x] Ao realizar o treinamento excluit o dictIdf antigo (createDictIdf);
 - [ ] Checar a necessidade de adicionar 1 objeto a um conjunto já treinado, nesse caso pensar em como fazer isso.
 - [x] Verificar o caso em que tentamos taggear um objeto que não participou do treinamento e que possui um token distinto.
 - [x] Em 'getMoreRelevantsOf' realizar uma normalização do tf-idf calculados, para posteriormente poder retornar apenas aqueles com relevância maior que minRelevance

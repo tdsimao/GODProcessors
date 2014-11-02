@@ -167,13 +167,13 @@ tagCollection: aGODDataCollection
 ####To tag all element of a collection
 ```Smalltalk
 pcsTagger = PCSTagger new.
-pcsTagger.tagCollection: aGODDataCollection.
+pcsTagger tagCollection: aGODDataCollection.
 ```
 ####To tag an element
 ```Smalltalk
 pcsTagger = PCSTagger new.
-pcsTagger.training: aGODDataCollection.
-pcsTagger.addTagsTo: aGODData.
+pcsTagger training: aGODDataCollection.
+pcsTagger addTagsTo: aGODData.
 ```
 
 
